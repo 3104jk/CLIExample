@@ -1,5 +1,7 @@
 package edu.handong.csee.java.examples;
 
+import java.io.File;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -12,6 +14,7 @@ public class Runner {
 	String path;
 	boolean verbose;
 	boolean help;
+	boolean full;
 
 	public static void main(String[] args) {
 
@@ -34,9 +37,23 @@ public class Runner {
 			
 			// TODO show the number of files in the path
 			
+			File file = new File(path);
+			
+			System.out.println(file.listFiles().length);
+			
+			
+			for(File a : file.listFiles()) {
+				if(full){
+					System.out.println(a.getAbsolutePath());
+				}
+				else System.out.println(file.getName());
+			}
+			
+			
 			if(verbose) {
 				
 				// TODO list all files in the path
+				System.out.println(file.getName());
 				
 				System.out.println("Your program is terminated. (This message is shown because you turned on -v option!");
 			}
@@ -53,6 +70,7 @@ public class Runner {
 			path = cmd.getOptionValue("p");
 			verbose = cmd.hasOption("v");
 			help = cmd.hasOption("h");
+			full = cmd.hasOption("f");
 
 		} catch (Exception e) {
 			printHelp(options);
@@ -87,6 +105,11 @@ public class Runner {
 		        .desc("Help")
 		        .build());
 
+		options.addOption(Option.builder("f").longOpt("full")
+		        .desc("print full path of the file in directory")
+		        .build());
+		
+		
 		return options;
 	}
 	
